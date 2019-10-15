@@ -12,7 +12,8 @@ class App extends React.Component {
 			increment: 10,
 			discounts : [],
 			tax : 10 ,
-			prices : []
+			prices : [],
+			tax : 10
 		}
 		this.onFieldChange = this.onFieldChange.bind(this);
 		this.onClearDiscounts = this.onClearDiscounts.bind(this);
@@ -22,7 +23,7 @@ class App extends React.Component {
 	onFieldChange(event) {
 			
 			this.state[event.target.name]= event.target.value;
-			const prices = this.calculatePrices(this.state.startingPrice, this.state.increment, this.state.discounts);
+			const prices = this.calculatePrices(this.state.startingPrice, this.state.increment, this.state.discounts, this.state.tax);
 			this.setState({
 				[event.target.name]: event.target.value, prices:prices});
 			
@@ -30,7 +31,7 @@ class App extends React.Component {
 	
 	onClearDiscounts(event) {
 		const discounts = [];
-		const prices = this.calculatePrices(this.state.startingPrice, this.state.increment, discounts);
+		const prices = this.calculatePrices(this.state.startingPrice, this.state.increment, discounts, this.state.tax);
 		this.setState( {discounts: discounts, prices:prices});		
 	}
 	
@@ -38,12 +39,12 @@ class App extends React.Component {
 		event.preventDefault();
 		const discounts = this.state.discounts.concat([this.state.tempDiscount]);
 
-		const prices = this.calculatePrices(this.state.startingPrice, this.state.increment, discounts);
+		const prices = this.calculatePrices(this.state.startingPrice, this.state.increment, discounts, this.state.tax);
 		this.setState( {discounts: discounts, prices:prices, tempDiscount:''});
 		
 	}
 	
-	calculatePrices (startingPrice, increment, discounts) {
+	calculatePrices (startingPrice, increment, discounts, tax) {
 		const prices = [];
 		for (var i=0; i< 10; i++) {
 			let price = parseInt(startingPrice) + i * increment;
@@ -52,7 +53,7 @@ class App extends React.Component {
 			for (let discount of discounts ) {
 				discountPrice = discountPrice * ((100 - discount) / 100);
 			}
-			prices.push({price:price, discountPrice: discountPrice});
+			prices.push({price:price, discountPrice: discountPrice, discountPriceWithTax: discountPrice*(tax+ 100)/100});
 		}
 		return prices
 		
@@ -79,6 +80,16 @@ return (<div class="container-fluid">
 	  
     </div>
  </div>
+ <div class="row">
+	 <div class="col-sm">
+      Tax
+    </div>
+	  <div class="col-sm">
+      <input type="text" name='increment' value={this.state.tax} onChange={this.onFieldChange}/>%
+	  
+    </div>
+ </div>		
+		
 		<div class="row">
 	  <div class="col-sm">
 		Discounts
@@ -108,13 +119,14 @@ return (<div class="container-fluid">
   <thead>
     <tr>
       <th scope="col">Price</th>
-      <th scope="col">DiscountedPrice</th>
+      <th scope="col">Discounted Price</th>
+		<th scope="col">With Tax</th>
     </tr>
   </thead>
 		
 		
 		<tbody>{ this.state.prices.map((price) => <tr>
-      <td>{price.price}</td><td>{price.discountPrice}</td></tr> )  }</tbody>
+      <td>{price.price}</td><td>{price.discountPrice.toFixed(2)}</td><td>{price.discountPriceWithTax.toFixed(2)}</td></tr> )  }</tbody>
 		
 		</table>
 		
