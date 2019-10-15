@@ -53,7 +53,7 @@ class App extends React.Component {
 			for (let discount of discounts ) {
 				discountPrice = discountPrice * ((100 - discount) / 100);
 			}
-			prices.push({price:price, discountPrice: discountPrice, discountPriceWithTax: discountPrice*(tax+ 100)/100});
+			prices.push({price:price, discountPrice: discountPrice, discountPriceWithTax: discountPrice*( parseInt(tax)+ 100)/100});
 		}
 		return prices
 		
@@ -67,7 +67,7 @@ return (<div class="container-fluid">
       <label htmlFor="startingPrice">Staring Price</label>
     </div>
 	  <div class="col-sm">
-		<input type="text" name='startingPrice' value={this.state.startingPrice} onChange={this.onFieldChange}/>
+		<input type="number" name='startingPrice' value={this.state.startingPrice} onChange={this.onFieldChange}/>
     </div>
  </div>
 	  
@@ -76,7 +76,7 @@ return (<div class="container-fluid">
       increment
     </div>
 	  <div class="col-sm">
-      <input type="text" name='increment' value={this.state.increment} onChange={this.onFieldChange}/>
+      <input type="number" name='increment' value={this.state.increment} onChange={this.onFieldChange}/>
 	  
     </div>
  </div>
@@ -85,7 +85,7 @@ return (<div class="container-fluid">
       Tax
     </div>
 	  <div class="col-sm">
-      <input type="text" name='increment' value={this.state.tax} onChange={this.onFieldChange}/>%
+      <input type="number" name='tax' value={this.state.tax} onChange={this.onFieldChange}/>%
 	  
     </div>
  </div>		
@@ -108,7 +108,7 @@ return (<div class="container-fluid">
       Add Discount
     </div>
 	  <div class="col-sm">
-		<input type="text" name='tempDiscount'value={this.state.tempDiscount} onChange={this.onFieldChange}/>
+		<input type="number" name='tempDiscount'value={this.state.tempDiscount} onChange={this.onFieldChange}/>
       <input type="submit" name='addDiscount' value="+" onClick={this.onAddDiscount} />
 	  
     </div>
